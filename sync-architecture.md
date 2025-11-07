@@ -15,7 +15,9 @@
 
 The LIFTUPP platform uses a sophisticated **bidirectional synchronization system** that enables offline-first operation while maintaining data consistency with a central web portal. The architecture is designed to handle unreliable network conditions common in clinical environments while ensuring no data loss.
 
-### Key Characteristics
+**Note**: Both OSCE and Develop apps share the same core sync architecture but sync different entity sets based on their data models (37 vs 63 entities).
+
+### Key Characteristics (Both Apps)
 
 - **Offline-first**: Full functionality without network connectivity
 - **Automatic sync**: Background synchronization when network available
@@ -24,6 +26,17 @@ The LIFTUPP platform uses a sophisticated **bidirectional synchronization system
 - **Batch processing**: Efficient handling of large datasets (100 objects per batch)
 - **Change tracking**: Granular tracking of modified attributes
 - **Conflict resolution**: Server wins for reference data
+
+### App-Specific Sync Differences
+
+| Aspect | OSCE App | Develop App |
+|--------|----------|-------------|
+| **Total Syncable Entities** | 35 (of 37 total) | 61 (of 63 total) |
+| **DOWN Only** | 23 entities | 45 entities (includes clinical content) |
+| **UP Only** | 9 entities (includes comments) | 13 entities (includes patient logs) |
+| **Key Synced Data** | Comments, assistance requests | Patient logs, diagnoses, procedures |
+| **Sync Frequency** | Every 10 minutes or on-demand | Every 10 minutes or on-demand |
+| **Typical Payload Size** | Smaller (comments, attendance) | Larger (patient demographics, procedures) |
 
 ### Sync Components
 
@@ -81,6 +94,8 @@ The sync system implements a sophisticated three-way sync:
 
 ### Entity Sync Classification
 
+#### OSCE App Sync (37 entities, 35 syncable)
+
 ```mermaid
 graph LR
     subgraph "DOWN Only - 23 Entities"
@@ -89,35 +104,100 @@ graph LR
         C[TypeForm Templates]
         D[Timetables Base]
         E[ActivityTypes]
+        F[CommentGroups]
+        G[ScenarioMetadata]
     end
 
-    subgraph "UP Only - 9 Entities"
-        F[DataForms]
-        G[Comments]
-        H[StaffSignIn]
-        I[SyncInformation]
+    subgraph "UP Only - 9 Entities [OSCE]"
+        H[DataForms]
+        I[Comments - Circuit/Station/Candidate]
+        J[StaffSignIn]
+        K[SyncInformation]
+        L[AssistanceRequested]
     end
 
     subgraph "Bidirectional - 2 Entities"
-        J[Timetable coverStaff]
-        K[TimetableAttendanceLog]
+        M[Timetable coverStaff]
+        N[TimetableAttendanceLog]
     end
 
-    L[Server] -->|Reference Data| A
-    L -->|Reference Data| B
-    L -->|Reference Data| C
-    L -->|Reference Data| D
-    L -->|Reference Data| E
+    subgraph "Local Only - 2 Entities"
+        O[AttributesSelected]
+        P[LastUpdate]
+    end
 
-    F -->|Assessments| L
-    G -->|Feedback| L
-    H -->|Audit| L
-    I -->|Monitoring| L
+    Server[Server] -->|Reference Data| A
+    Server -->|Reference Data| B
+    Server -->|Reference Data| C
+    Server -->|Metadata| F
+    Server -->|Scenarios| G
 
-    J <-->|Updates| L
-    K <-->|Updates| L
+    H -->|Assessments| Server
+    I -->|Feedback| Server
+    J -->|Audit| Server
+    L -->|Assistance| Server
 
-    style L fill:#FFD700
+    M <-->|Staff Changes| Server
+    N <-->|Attendance Updates| Server
+
+    style Server fill:#FFD700
+    style I fill:#3FA9F5
+    style L fill:#3FA9F5
+```
+
+#### Develop App Sync (63 entities, 61 syncable)
+
+```mermaid
+graph LR
+    subgraph "DOWN Only - 45 Entities [Develop]"
+        A[Students/Staff/TypeForms]
+        B[Patients - Base]
+        C[Diagnoses + Groups]
+        D[Procedures]
+        E[Investigations]
+        F[Interventions]
+        G[Thresholds]
+        H[Clinical Alerts - Types]
+    end
+
+    subgraph "UP Only - 13 Entities [Develop]"
+        I[DataForms]
+        J[Patient Logs]
+        K[StaffSignIn]
+        L[SyncInformation]
+        M[Clinical Alerts - Data]
+    end
+
+    subgraph "Bidirectional - 2 Entities"
+        N[Timetable coverStaff]
+        O[TimetableAttendanceLog]
+    end
+
+    subgraph "Local Only - 2 Entities"
+        P[AttributesSelected]
+        Q[LastUpdate]
+    end
+
+    Server[Server] -->|Reference Data| A
+    Server -->|Patient Data| B
+    Server -->|Clinical Content| C
+    Server -->|Clinical Content| D
+    Server -->|Clinical Content| E
+    Server -->|Clinical Content| F
+    Server -->|Thresholds| G
+    Server -->|Alert Types| H
+
+    I -->|Assessments| Server
+    J -->|Patient Encounters| Server
+    K -->|Audit| Server
+    M -->|Alert Instances| Server
+
+    N <-->|Staff Changes| Server
+    O <-->|Attendance Updates| Server
+
+    style Server fill:#FFD700
+    style J fill:#FF9999
+    style M fill:#FF9999
 ```
 
 ### Change Tracking System
