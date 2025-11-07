@@ -462,6 +462,53 @@ Pre-defined rating scales with descriptive criteria:
 
 **Outcome**: Dr. Thompson successfully assessed 8 students in 2 hours with structured, consistent evaluations. All data immediately available in institutional database for reporting and student access.
 
+#### Journey 1 Workflow Diagram
+
+**[OSCE]** Clinical Assessment Workflow:
+
+```mermaid
+flowchart TD
+    Start([Staff Opens OSCE App]) --> SelectClinic[Select Clinic Session]
+    SelectClinic --> ReviewStudents[Review Student List]
+    ReviewStudents --> MarkAttendance[Mark Student Attendance]
+
+    MarkAttendance --> StudentArrives{Student Arrives<br/>at Station?}
+    StudentArrives -->|Yes| SelectStudent[Select Student Name]
+    SelectStudent --> ViewForm[View Assessment Form]
+    ViewForm --> StartTimer[Timer Starts Automatically<br/>15 minutes]
+
+    StartTimer --> Assess[Observe & Assess Student]
+    Assess --> UseMatrix[Use Marking Matrix<br/>Rate Performance]
+    UseMatrix --> AddComments[Add Text Comments]
+
+    AddComments --> TimerCheck{Timer<br/>Remaining?}
+    TimerCheck -->|2 min warning| AmberAlert[Amber Alert Shown]
+    AmberAlert --> ContinueAssess[Continue Assessment]
+    ContinueAssess --> TimerExpire
+    TimerCheck -->|Expired| TimerExpire[Audio Alert<br/>Timer Expires]
+
+    TimerExpire --> VerbalFeedback[Provide Verbal Feedback]
+    VerbalFeedback --> StudentSign[Student Signs<br/>Acknowledgment]
+    StudentSign --> SignOut[Staff Signs Out Student]
+
+    SignOut --> MoreStudents{More Students<br/>to Assess?}
+    MoreStudents -->|Yes| StudentArrives
+    MoreStudents -->|No| ReviewComplete[Review Completion Status]
+
+    ReviewComplete --> AddCircuitComment[Add Circuit-Level Comments]
+    AddCircuitComment --> AutoSync[Auto-Sync to Server]
+    AutoSync --> CloseSession([Close Clinic Session])
+
+    Assess -.->|Issue Occurs| AssistRequest[Request Assistance]
+    AssistRequest -.-> TeachingLead[Teaching Lead Notified]
+    TeachingLead -.-> IssueResolved[Issue Resolved]
+    IssueResolved -.-> Assess
+
+    style Start fill:#3FA9F5
+    style CloseSession fill:#90EE90
+    style AssistRequest fill:#FF6B6B
+```
+
 ### Journey 2: Managing a Multi-Station OSCE
 
 **Actor**: Professor David Lee, Teaching Lead
@@ -520,6 +567,58 @@ Pre-defined rating scales with descriptive criteria:
 
 **Outcome**: Successful coordination of 144 individual assessments with zero data loss, real-time assistance management, and immediate availability of results for analysis.
 
+#### Journey 2 Workflow Diagram
+
+**[OSCE]** Multi-Station OSCE Coordination:
+
+```mermaid
+flowchart TD
+    Start([Teaching Lead Opens App]) --> ReviewConfig[Review Circuit Configuration<br/>6 stations, 24 students]
+    ReviewConfig --> CheckStaff[Check Staff Assignments<br/>1 assessor per station]
+    CheckStaff --> VerifySchedule[Verify Student Schedule]
+
+    VerifySchedule --> StaffBriefing[Staff Briefing<br/>Assessors Sign In]
+    StaffBriefing --> ConfirmStaffing{All Stations<br/>Staffed?}
+    ConfirmStaffing -->|No| WaitForStaff[Wait for Staff]
+    WaitForStaff --> ConfirmStaffing
+    ConfirmStaffing -->|Yes| StartOSCE[Start OSCE<br/>Assign Students to Stations]
+
+    StartOSCE --> SyncTimers[Synchronize Timers<br/>Across All iPads]
+    SyncTimers --> MonitorDashboard[Monitor Master View<br/>Dashboard]
+
+    MonitorDashboard --> CheckProgress{Monitor<br/>Progress}
+    CheckProgress --> ReviewStats[Review Statistics:<br/>Attendance, Completion Rates]
+
+    ReviewStats --> IssueDetected{Issue<br/>Detected?}
+    IssueDetected -->|Yes - Assistance| RespondAssist[Respond to<br/>Assistance Request]
+    RespondAssist --> ResolveIssue[Resolve Issue<br/>Extend Timer if Needed]
+    ResolveIssue --> CheckProgress
+
+    IssueDetected -->|Yes - Behind Schedule| VisitStation[Visit Station<br/>Offer Support]
+    VisitStation --> CheckProgress
+
+    IssueDetected -->|No| RotationTime{Rotation<br/>Time?}
+    RotationTime -->|No| CheckProgress
+    RotationTime -->|Yes| TimersExpire[Timers Expire<br/>Simultaneously]
+
+    TimersExpire --> StudentsRotate[Students Rotate<br/>to Next Station]
+    StudentsRotate --> AssessorsReceive[Assessors Receive<br/>New Students]
+    AssessorsReceive --> MoreRotations{More<br/>Rotations?}
+    MoreRotations -->|Yes| MonitorDashboard
+    MoreRotations -->|No| OSCEComplete[OSCE Complete<br/>144 Assessments]
+
+    OSCEComplete --> ReviewDashboard[Review Completion<br/>Dashboard: 100%]
+    ReviewDashboard --> AutoSync[Auto-Sync All Data<br/>to Server]
+    AutoSync --> GenerateReport[Generate Summary Report]
+    GenerateReport --> PostDebrief[Post-Clinic Debrief<br/>Review Feedback]
+    PostDebrief --> ExportRecords[Export Attendance<br/>Records]
+    ExportRecords --> End([Session Complete])
+
+    style Start fill:#3FA9F5
+    style End fill:#90EE90
+    style RespondAssist fill:#FF6B6B
+```
+
 ### Journey 3: Responding to Technical Issues
 
 **Actor**: IT Administrator, James Wilson
@@ -571,6 +670,157 @@ Pre-defined rating scales with descriptive criteria:
    - Sync resumes normally
 
 **Outcome**: Successful deployment of 20 iPads to new institution with minimal IT overhead. QR code provisioning eliminated manual configuration errors.
+
+### Journey 4: Clinical Teaching with Patient Cases
+
+**[Develop]** This journey showcases the Develop app's patient-centered clinical teaching workflow.
+
+**Actor**: Dr. Rachel Martinez, Clinical Supervisor
+
+**Scenario**: Dr. Martinez is supervising Year 3 dentistry students during a clinical teaching session. Students are seeing real patients and must demonstrate clinical decision-making, diagnosis, and treatment planning.
+
+**Steps:**
+
+1. **Session Start (9:00 AM)**
+   - Dr. Martinez opens Develop app on iPad
+   - Selects "Year 3 Clinical Practice - Tuesday AM"
+   - Reviews scheduled students (6 students, 2-hour session)
+   - Marks student attendance as they arrive
+
+2. **Patient Arrives (9:15 AM)**
+   - Student 1 (Sophie Chen) brings patient to bay
+   - Dr. Martinez taps Sophie's name
+   - Selects "Add New Patient Log"
+   - Records patient details:
+     - Patient ID: P-2847-23
+     - Demographics: Age 45, Female
+     - Chief complaint: "Tooth pain upper right"
+
+3. **Clinical Assessment Phase (9:15-9:45 AM)**
+   - Dr. Martinez observes Sophie's examination
+   - Sophie completes clinical examination
+   - Dr. Martinez opens assessment form
+   - Records observations using specialized question types:
+     - **Binary Question**: "Obtained informed consent?" → Yes
+     - **FreeText Question**: "History of presenting complaint" → Sophie's summary
+     - **Investigation Question**: "Tests ordered" → Periapical radiograph
+     - **Rating Question**: "Clinical examination technique" → 4/5
+
+4. **Diagnosis and Treatment Planning (9:45-10:00 AM)**
+   - Sophie presents findings to Dr. Martinez
+   - Dr. Martinez uses Develop app to record:
+     - **Primary Diagnosis**: Acute pulpitis (selected from diagnosis list)
+     - **Diagnosis Group**: Pulpal Diseases
+     - **Proposed Procedure**: Root canal therapy
+     - **Procedure Difficulty**: Level 3 (Intermediate)
+   - Reviews adaptive threshold: Sophie meets competency threshold for this procedure
+
+5. **Treatment Execution (10:00-10:30 AM)**
+   - Sophie performs emergency pulpotomy with supervision
+   - Dr. Martinez records:
+     - **Procedure Completed**: Emergency pulpotomy
+     - **Interventions**: Local anesthesia, rubber dam isolation
+     - **Materials Used**: Calcium hydroxide, temporary filling
+     - **Student Performance**: Threshold met (competency achieved)
+
+6. **Feedback and Sign-Off (10:30-10:45 AM)**
+   - Dr. Martinez provides verbal feedback
+   - Records structured feedback in app:
+     - **Feedback Question**: "Overall clinical decision-making" → 4/5
+     - **FreeText Comment**: "Excellent patient communication. Work on efficient rubber dam placement."
+   - Sophie acknowledges feedback with digital signature
+   - Dr. Martinez signs out student
+   - Patient log automatically links to attendance record
+
+7. **Clinical Alert Triggered (10:45 AM)**
+   - System detects Sophie has completed required number of pulpotomy procedures
+   - Clinical alert: "Student ready for independent practice assessment"
+   - Dr. Martinez notes alert for future scheduling
+
+8. **Second Student (11:00 AM)**
+   - Student 2 (James Thompson) presents with different case
+   - Process repeats with new patient log
+   - Different diagnosis (Periodontal disease)
+   - Different procedures recorded
+
+9. **Session End (11:15 AM)**
+   - All 6 students assessed with patient cases
+   - Dr. Martinez reviews completion:
+     - 6/6 students signed out
+     - 6 patient logs created
+     - 8 different diagnoses documented
+     - 12 procedures recorded
+   - App automatically syncs all data to server
+   - Patient encounter data available for student portfolios
+
+**Outcome**: Comprehensive clinical teaching session documenting real patient encounters, clinical decision-making, diagnoses, and procedures. Rich data captured for competency-based progression tracking and student portfolio building.
+
+#### Journey 4 Workflow Diagram
+
+**[Develop]** Patient-Centered Clinical Teaching:
+
+```mermaid
+flowchart TD
+    Start([Staff Opens Develop App]) --> SelectSession[Select Clinical<br/>Teaching Session]
+    SelectSession --> ReviewStudents[Review Student List]
+    ReviewStudents --> MarkAttendance[Mark Attendance]
+
+    MarkAttendance --> PatientArrives{Patient<br/>Arrives?}
+    PatientArrives -->|Yes| SelectStudent[Select Student Name]
+    SelectStudent --> NewPatientLog[Create New Patient Log]
+    NewPatientLog --> RecordDemographics[Record Patient Demographics<br/>ID, Age, Gender, Ethnicity]
+
+    RecordDemographics --> ObserveExam[Observe Student<br/>Clinical Examination]
+    ObserveExam --> RecordObservations[Record Observations<br/>Using Specialized Questions]
+
+    RecordObservations --> BinaryQ[Binary: Consent Obtained?]
+    RecordObservations --> FreeTextQ[FreeText: History Summary]
+    RecordObservations --> InvestigationQ[Investigation: Tests Ordered]
+    RecordObservations --> RatingQ[Rating: Technique Score]
+
+    BinaryQ --> DiagnosisPhase
+    FreeTextQ --> DiagnosisPhase
+    InvestigationQ --> DiagnosisPhase
+    RatingQ --> DiagnosisPhase[Student Presents Findings]
+
+    DiagnosisPhase --> RecordDiagnosis[Record Diagnosis<br/>Select from Diagnosis List]
+    RecordDiagnosis --> SetDiagnosisGroup[Set Diagnosis Group]
+    SetDiagnosisGroup --> ProposeProcedure[Propose Procedure<br/>Set Difficulty Level]
+
+    ProposeProcedure --> CheckThreshold{Check Adaptive<br/>Threshold}
+    CheckThreshold -->|Met| ProceedTreatment[Proceed with Treatment]
+    CheckThreshold -->|Not Met| SupervisionRequired[Require Direct<br/>Supervision]
+
+    ProceedTreatment --> TreatmentExecution[Student Performs Procedure<br/>Under Supervision]
+    SupervisionRequired --> TreatmentExecution
+
+    TreatmentExecution --> RecordProcedure[Record Procedure Completed]
+    RecordProcedure --> RecordInterventions[Record Interventions<br/>& Materials Used]
+    RecordInterventions --> AssessPerformance[Assess Performance<br/>Against Thresholds]
+
+    AssessPerformance --> ProvideFeedback[Provide Structured Feedback<br/>Feedback Questions]
+    ProvideFeedback --> StudentSign[Student Digital Signature]
+    StudentSign --> StaffSignOut[Staff Signs Out Student]
+
+    StaffSignOut --> CheckAlert{Clinical<br/>Alert?}
+    CheckAlert -->|Yes| DisplayAlert[Display Alert:<br/>Competency Milestone Reached]
+    DisplayAlert --> NoteAlert[Note for Future Scheduling]
+    CheckAlert -->|No| LinkPatientLog[Link Patient Log to<br/>Attendance Record]
+    NoteAlert --> LinkPatientLog
+
+    LinkPatientLog --> MoreStudents{More<br/>Students?}
+    MoreStudents -->|Yes| PatientArrives
+    MoreStudents -->|No| ReviewSession[Review Session Completion<br/>All Students, Patients, Procedures]
+
+    ReviewSession --> AutoSync[Auto-Sync to Server<br/>Patient Logs & Assessments]
+    AutoSync --> PortfolioUpdate[Data Available for<br/>Student Portfolios]
+    PortfolioUpdate --> End([Session Complete])
+
+    style Start fill:#FF9999
+    style End fill:#90EE90
+    style CheckThreshold fill:#FFD700
+    style DisplayAlert fill:#FF6B6B
+```
 
 ## Value Proposition
 
