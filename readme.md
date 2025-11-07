@@ -33,6 +33,7 @@ This repository contains comprehensive documentation for the LIFTUPP (Liverpool 
 
 ### For Technical Teams
 - **[Architecture Overview](architecture-overview.md)** - High-level system architecture with diagrams
+- **[Component Architecture](component-architecture.md)** - System components, dependencies, and design patterns
 - **[Data Model Reference](data-model.md)** - Complete Core Data model documentation
 - **[Sync Architecture](sync-architecture.md)** - Synchronization and web portal integration
 - **[Shared Library Documentation](shared-library.md)** - liftupp-app-library detailed reference
