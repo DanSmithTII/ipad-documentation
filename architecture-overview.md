@@ -10,7 +10,32 @@
 
 ## System Overview
 
-The LIFTUPP platform is an enterprise iPad solution for conducting OSCE (Objective Structured Clinical Examination) assessments in medical and dental education. The system enables real-time clinical assessment, student tracking, and comprehensive feedback management.
+The LIFTUPP platform is an enterprise iPad solution for clinical assessment and teaching in medical and dental education. The platform consists of two complementary applications:
+
+### Two Complementary Apps
+
+**OSCE App** (`osce-ios`)
+- **Purpose**: Structured OSCE examination delivery
+- **Focus**: Station-based circuit assessments with timed rotations
+- **Core Features**: Timer management, marking matrices, assistance requests, real-time comments
+- **Data Model**: 37 Core Data entities
+- **Version**: 1.0.24
+
+**Develop App** (`liftupp-for-ipad`)
+- **Purpose**: Clinical teaching and case-based learning
+- **Focus**: Patient-centered assessment with diagnosis and treatment tracking
+- **Core Features**: Patient logging, diagnoses, procedures, investigations, interventions, adaptive thresholds
+- **Data Model**: 63 Core Data entities
+- **Version**: 1.5.19
+
+### Shared Foundation
+Both apps share the **liftupp-app-library** codebase (80+ files) providing:
+- Core assessment framework (27 shared entities)
+- Common sync architecture
+- Shared UI components
+- Networking and security infrastructure
+
+**Note**: This document describes the shared architecture. App-specific features are marked as **[OSCE]** or **[Develop]**.
 
 ### High-Level Architecture
 

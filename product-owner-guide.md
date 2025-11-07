@@ -12,32 +12,65 @@
 
 ## Executive Summary
 
-**LIFTUPP** (Liverpool iPad For Teaching University Professional Practice) is an enterprise iPad platform that digitizes clinical assessment in dental and medical education. Originally developed by The University of Liverpool, the platform is now deployed across 13+ UK institutions, supporting thousands of student assessments annually.
+**LIFTUPP** (Liverpool iPad For Teaching University Professional Practice) is an enterprise iPad platform that digitizes clinical assessment and teaching in dental and medical education. Originally developed by The University of Liverpool, the platform consists of two complementary applications now deployed across 13+ UK institutions, supporting thousands of student assessments annually.
+
+### Two Complementary Applications
+
+**OSCE App** - Examination Assessment
+- **Purpose**: Structured OSCE examination delivery
+- **Current Version**: 1.0.24
+- **Focus**: Station-based circuits with timed rotations
+- **Key Features**: Timer management, marking matrices, assistance requests, real-time comments
+
+**Develop App** - Clinical Teaching
+- **Purpose**: Clinical teaching and case-based learning
+- **Current Version**: 1.5.19
+- **Focus**: Patient-centered assessment with clinical decision tracking
+- **Key Features**: Patient logging, diagnoses, procedures, investigations, interventions, adaptive thresholds
 
 ### Key Statistics
 - **Active Institutions**: 13+ across UK (Liverpool, Manchester, QMUL, King's, Belfast, Scottish universities, etc.)
 - **Platform**: iPad-exclusive, iOS 12.0+
 - **Deployment Model**: On-premises institution servers with iPad clients
-- **Assessment Type**: OSCE (Objective Structured Clinical Examination)
-- **Current Version**: 1.0.24 (production)
+- **Assessment Types**: OSCE examinations (OSCE app) + Clinical teaching (Develop app)
 
-### Business Value
+### Business Value (Both Apps)
 - **Eliminates paper-based assessments** - 100% digital workflow
 - **Real-time data capture** - Immediate feedback and grading
 - **Offline-first design** - Continues working without internet
 - **Multi-institution platform** - Single codebase, multiple tenants
 - **Comprehensive audit trail** - Full assessment history and compliance
+- **Flexible deployment** - Use one or both apps based on institutional needs
 
 ## Product Overview
 
 ### What is LIFTUPP?
 
-LIFTUPP is a sophisticated iPad application system that enables clinical educators to:
-- **Conduct real-time student assessments** during clinical sessions
-- **Track student attendance** across multiple stations and circuits
-- **Provide structured feedback** using customizable forms and marking matrices
-- **Manage station rotations** with automated timers
-- **Synchronize data** with institutional web portals
+LIFTUPP is a sophisticated iPad application system comprising two complementary apps:
+
+**OSCE App** enables clinical educators to:
+- **Conduct OSCE examinations** with structured station-based circuits
+- **Manage timed rotations** with countdown timers and alerts
+- **Track student attendance** across examination stations
+- **Provide structured feedback** using marking matrices
+- **Request assistance** in real-time across stations
+- **Add comments** at circuit, station, and candidate levels
+
+**Develop App** enables clinical educators to:
+- **Conduct clinical teaching** with patient case-based learning
+- **Log patient encounters** with comprehensive demographics
+- **Track diagnoses** and treatment planning
+- **Record procedures and interventions** performed by students
+- **Document investigations** and test ordering
+- **Use adaptive thresholds** for competency-based assessment
+- **Manage clinical alerts** for clinic operations
+
+**Both Apps** provide:
+- **Customizable assessment forms** with sections and questions
+- **Real-time attendance tracking** of students
+- **Offline-first operation** - full functionality without internet
+- **Automatic synchronization** with institutional web portals
+- **Multi-institution support** with custom branding
 - **Generate reports** for academic review and accreditation
 
 ### Problem Statement
